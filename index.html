@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>친환경 퀴즈</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f9f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    h1 {
+        color: #2a7f2a;
+    }
+    .quiz-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        max-width: 500px;
+        width: 100%;
+    }
+    .question {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .options button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #a6dba6;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .options button:hover {
+        background-color: #76c476;
+    }
+    .result {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #2a7f2a;
+    }
+</style>
+</head>
+<body>
+
+<h1>친환경 퀴즈</h1>
+<div class="quiz-container">
+    <div class="question" id="question">문제가 여기에 표시됩니다.</div>
+    <div class="options">
+        <button onclick="checkAnswer(this)">옵션1</button>
+        <button onclick="checkAnswer(this)">옵션2</button>
+        <button onclick="checkAnswer(this)">옵션3</button>
+        <button onclick="checkAnswer(this)">옵션4</button>
+    </div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        question: "도심에서 열섬현상을 줄이는 가장 효과적인 방법은?",
+        options: ["차량 늘리기", "건물 옥상 녹화", "공장 증설", "콘크리트 더 깔기"],
+        answer: "건물 옥상 녹화"
+    },
+    {
+        question: "미세먼지를 줄이기 위해 좋은 선택은?",
+        options: ["나무 심기", "자동차 엔진 늘리기", "쓰레기 소각", "에어컨 사용 늘리기"],
+        answer: "나무 심기"
+    },
+    {
+        question: "친환경 건물 설계에 포함될 수 있는 요소는?",
+        options: ["태양광 패널", "석탄 난방", "플라스틱 벽", "자동차 주차장 확대"],
+        answer: "태양광 패널"
+    }
+];
+
+let currentQuiz = 0;
+
+function loadQuiz() {
+    const currentData = quizData[currentQuiz];
+    document.getElementById('question').textContent = currentData.question;
+    const buttons = document.querySelectorAll('.options button');
+    buttons.forEach((btn, i) => {
+        btn.textContent = currentData.options[i];
+        btn.disabled = false;
+        btn.style.backgroundColor = "#a6dba6";
+    });
+    document.getElementById('result').textContent = "";
+}
+
+function checkAnswer(button) {
+    const selected = button.textContent;
+    const correct = quizData[currentQuiz].answer;
+    if(selected === correct){
+        button.style.backgroundColor = "#4CAF50";
+        document.getElementById('result').textContent = "정답이에요! 🎉";
+    } else {
+        button.style.backgroundColor = "#f44336";
+        document.getElementById('result').textContent = "틀렸어요 😢 정답: " + correct;
+    }
+    // 버튼 비활성화
+    document.querySelectorAll('.options button').forEach(btn => btn.disabled = true);
+
+    // 다음 문제 로드
+    currentQuiz++;
+    if(currentQuiz < quizData.length){
+        setTimeout(loadQuiz, 1500);
+    } else {
+        setTimeout(() => {
+            document.getElementById('question').textContent = "퀴즈 완료! 🌿";
+            document.querySelector('.options').style.display = "none";
+        }, 1500);
+    }
+}
+
+// 첫 문제 로드
+loadQuiz();
+</script>
+
+</body>
+</html>
